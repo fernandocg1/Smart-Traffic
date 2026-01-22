@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 17
+names: ['Ambulancia', 'Caminhao', 'Carro Amarelo', 'Carro Azul Escuro', 'Carro Branco', 'Carro Cinza', 'Carro Marrom', 'Carro Prata', 'Carro Preto', 'Carro Verde', 'Carro Vermelho', 'Onibus', 'Taxi', 'Van Branca', 'Van Prata', 'Van Preta', 'Viaturas']
+
+roboflow:
+  workspace: smart-traffic-lgbzr
+  project: smart-traffic-nuevh
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/smart-traffic-lgbzr/smart-traffic-nuevh/dataset/2

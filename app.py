@@ -23,12 +23,11 @@ video_file = st.sidebar.file_uploader("Selecione um vídeo (mp4, avi, mov)", typ
 linha_y = st.sidebar.slider("Posição da Linha de Contagem", 0, 1000, 400)
 
 if video_file:
-    # Salva vídeo temporário para o OpenCV ler
     tfile = tempfile.NamedTemporaryFile(delete=False)
     tfile.write(video_file.read())
     
     cap = cv2.VideoCapture(tfile.name)
-    st_frame = st.empty() # Espaço reservado para o vídeo
+    st_frame = st.empty()
     
     contador = 0
     ids_contados = set()
@@ -38,10 +37,8 @@ if video_file:
         if not ret:
             break
         
-        # Redimensiona para manter o Streamlit leve
         frame = cv2.resize(frame, (850, 480))
         
-        # Inferência
         results = model.track(frame, persist=True, verbose=False)
         
         if results[0].boxes.id is not None:
@@ -51,10 +48,8 @@ if video_file:
             for box, id in zip(boxes, ids):
                 cx, cy = int((box[0] + box[2]) / 2), int(box[3])
                 
-                # Desenha o rastreio
                 cv2.circle(frame, (cx, cy), 5, (0, 255, 0), -1)
 
-                # Lógica de Cruzamento
                 if cy > linha_y and id not in ids_contados:
                     contador += 1
                     ids_contados.add(id)

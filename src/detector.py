@@ -3,7 +3,6 @@ from ultralytics import YOLO
 import torch
 
 def run_detection(video_path=0):
-    # Detecta se sua GTX 1650 está disponível
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = YOLO("yolo11n.pt").to(device)
     
@@ -12,13 +11,12 @@ def run_detection(video_path=0):
     # Configurações da Linha
     linha_y = 400 
     contador = 0
-    ids_contados = set() # Usamos um Set para não contar o mesmo ID duas vezes
+    ids_contados = set()
 
     while cap.isOpened():
         success, frame = cap.read()
         if not success: break
 
-        # O segredo está no persist=True, que mantém o ID do objeto entre frames
         results = model.track(frame, persist=True, device=device, verbose=False)
 
         if results[0].boxes.id is not None:
@@ -26,14 +24,11 @@ def run_detection(video_path=0):
             ids = results[0].boxes.id.cpu().numpy().astype(int)
 
             for box, id in zip(boxes, ids):
-                # Centro da base da caixa
                 cx = int((box[0] + box[2]) / 2)
-                cy = int(box[3]) # Ponto inferior da caixa (pés/pneus)
+                cy = int(box[3])
 
-                # Desenha o ponto do objeto
                 cv2.circle(frame, (cx, cy), 5, (0, 255, 0), -1)
 
-                # Lógica de cruzamento
                 if cy > linha_y and id not in ids_contados:
                     contador += 1
                     ids_contados.add(id)

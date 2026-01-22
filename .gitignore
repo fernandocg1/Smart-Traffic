@@ -1,6 +1,7 @@
 venv/
 __pycache__/
-*.pt
+runs/detect/monitoramento_cores/train/
+data/raw/
 *.mp4
 *.avi
-.env
+.DS_Store
